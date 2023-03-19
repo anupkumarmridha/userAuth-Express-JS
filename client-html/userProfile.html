@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Online Document Store - User Profile</title>
+  <style>
+    /* Add some styles for the form */
+    body {
+      background-color: rgb(201, 219, 242);
+    }
+
+    header h1 {
+      text-align: center;
+    }
+
+    main {
+      max-width: 500px;
+      margin: 1em auto;
+      padding: 1em;
+      background-color: rgb(168, 190, 220);
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgb(162, 161, 161);
+    }
+
+    label,
+    input[type="submit"] {
+      display: block;
+      margin-bottom: 1em;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 1em;
+    }
+
+    input[type="submit"] {
+      padding: 1em;
+      background-color: rgb(41, 90, 155);
+      color: white;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+  <script type="module">
+      // import {fectUserDetails} from "/scripts.js";
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>Online Document Store - User Profile</h1>
+  </header>
+  <main>
+    <div id="profileContainer">
+      <h1>Profile</h1>
+      <div id="name"></div>
+      <div id="email"></div>
+    </div>
+  </main>
+</body>
+<script>
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const response = fetch("http://localhost:8000/api/user/user_details", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+
+      }).then(res=> res.json())
+      .then( data => {
+        console.log(data)
+        document.getElementById("name").innerHTML = data.user.name;
+        document.getElementById("email").innerHTML = data.user.email;
+      })
+    }
+    else {
+      alert("Unauthorized user");
+    }
+  }
+  catch (err) {
+    console.log(err);
+  }
+</script>
+<!-- 
+  <script>
+    const username = localStorage.getItem("username");
+    const name = localStorage.getItem("name");
+    const email = localStorage.getItem("email");
+    console.log(username)
+    const usernameContainer = document.getElementById("username");
+    usernameContainer.innerHTML = "<strong>Username: </strong>" + username;
+  
+    const nameContainer = document.getElementById("name");
+    nameContainer.innerHTML = "<strong>Name: </strong>" + name;
+  
+    const emailContainer = document.getElementById("email");
+    emailContainer.innerHTML = "<strong>Email: </strong>" + email;
+  </script> -->
+
+</html>
